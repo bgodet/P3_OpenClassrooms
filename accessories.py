@@ -1,6 +1,6 @@
 import glob, os
 
-class Mcgiver:
+class Accessories:
 	"""Arguments à compléter"""
 	def __init__(self, arg):
 		pass
