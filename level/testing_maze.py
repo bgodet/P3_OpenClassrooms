@@ -22,21 +22,21 @@ levels = [""]
 
 # Définition du labyrinthe
 level_1 = [
-"   ##### #  ###",
-" #     # ## #  ",
-"  ## #   #    #",
-"#   ####   ####",
-"   #     ###  #",
-"## #### ##   ##",
-"   ###    #####",
-" #   ## # ##  #",
-" ## #   #   ###",
-"###  #### #####",
-"### ## #  ##  #",
-"#   #  # ##  ##",
-"  ##  #     ###",
-"##### ## ## ###",
-"#    ###  #    "
+"XXXXXXXXXXXXXXX",
+"X X  XXXXXX   X",
+"X X X     X X X",
+"X X   XXX X X X",
+"X XXX XX  X X X",
+"X   X  X XX X X",
+"XXX XX X X  X X",
+"X X  X X X  X X",
+"X X    X X  X X",
+"X X XXXX X  X X",
+"X X X    X  X X",
+"X X      X  X X",
+"X X  XXXXX  X X",
+"X           X X",
+"XXXXXXXXXXXXXXX"
 ]
 
 levels.append(level_1)
@@ -51,7 +51,7 @@ def setup_maze(level):
             screen_y = 288 - (y * 24)
 
             # Check si le joueur est un mur
-            if character == "#":
+            if character == "X":
                 pen.goto(screen_x, screen_y)
                 pen.stamp()
 
