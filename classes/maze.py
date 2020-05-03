@@ -4,6 +4,7 @@ from corridor import *
 from end import *
 from guardian import *
 from player import *
+from item import *
 
 # Class of the maze's elements
 ##############################
@@ -45,7 +46,21 @@ class Maze:
 	##############################
 
 	def __str__(self):
-		return Maze
 
+		count = 0
+		while (Maze.maze_list != "\n"):
+			if (Wall() != "\n"):
+				count + 1
+				print("X")
+			elif (Guardian() != "\n"):
+				count + 1
+				print("G")
+			elif (End() != "\n"):
+				count + 1
+				print ("E")
+			elif (Corridor() != "\n"):
+				count + 1
+				print (" ")
+
+	# Probleme suivant : Ne se concatène pas
 	# ! NE FONCTIONNE PAS POUR LE MOMENT ! #
-	# ! MISE EN PLACE D'UN MAIN POUR L'EXECUTION ! #
