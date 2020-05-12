@@ -1,11 +1,5 @@
 import glob, os
 from classes.maze import *
-from classes.wall import *
-from classes.corridor import *
-from classes.item import *
-from classes.player import *
-from classes.end import *
-from classes.guardian import *
 
 maze = Maze('/Users/ggodet/p3_openclassrooms/level/maze.txt')
 

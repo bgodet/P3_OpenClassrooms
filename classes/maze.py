@@ -1,10 +1,10 @@
 import glob, os
-from wall import *
-from corridor import *
-from end import *
-from guardian import *
-from player import *
-from item import *
+from classes.wall import *
+from classes.corridor import *
+from classes.end import *
+from classes.guardian import *
+from classes.player import *
+
 
 # Class of the maze's elements
 ##############################
@@ -17,7 +17,6 @@ class Maze:
 		# Fonction d'instencification des objets de mon labyrinthe
 		##########################################################
 
-		filepath = '/Users/ggodet/p3_openclassrooms/level/maze.txt'
 		maze_list = []
 
 		with open (filepath) as fp: # Attention FP = Fichier ouvert
@@ -46,21 +45,19 @@ class Maze:
 	##############################
 
 	def __str__(self):
-
-		count = 0
-		while (Maze.maze_list != "\n"):
-			if (Wall() != "\n"):
-				count + 1
-				print("X")
-			elif (Guardian() != "\n"):
-				count + 1
-				print("G")
-			elif (End() != "\n"):
-				count + 1
-				print ("E")
-			elif (Corridor() != "\n"):
-				count + 1
-				print (" ")
+		
+		for Maze.line in Maze.maze_list:
+			for objet in Maze.line:
+				if (objet == Wall()):
+					Wall() = 'X'
+				elif (objet == Guardian()):
+					Guardian() = 'G'
+				elif (objet == End()):
+					End() = 'E'
+				elif (objet == Corridor()):
+					Corridor() = ' '
+				elif (objet == Player()):
+					Player() == 'P'
 
 	# Probleme suivant : Ne se concatène pas
 	# ! NE FONCTIONNE PAS POUR LE MOMENT ! #
