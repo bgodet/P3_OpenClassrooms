@@ -45,19 +45,11 @@ class Maze:
 	##############################
 
 	def __str__(self):
-		
-		for Maze.line in Maze.maze_list:
-			for objet in Maze.line:
-				if (objet == Wall()):
-					Wall() = 'X'
-				elif (objet == Guardian()):
-					Guardian() = 'G'
-				elif (objet == End()):
-					End() = 'E'
-				elif (objet == Corridor()):
-					Corridor() = ' '
-				elif (objet == Player()):
-					Player() == 'P'
+
+		objects = type(object)
+
+		for objects in self.maze_list
+			return objects
 
 	# Probleme suivant : Ne se concatène pas
 	# ! NE FONCTIONNE PAS POUR LE MOMENT ! #

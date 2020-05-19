@@ -1,4 +1,5 @@
 import glob, os
 
 class End:
-    pass
+    def __str__(self):
+        return "E"

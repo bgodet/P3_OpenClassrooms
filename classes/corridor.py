@@ -1,4 +1,5 @@
 import glob, os
 
 class Corridor:
-    pass
+    def __str__(self):
+        return " "

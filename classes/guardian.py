@@ -1,4 +1,5 @@
 import glob, os
 
 class Guardian:
-    pass
+    def __str__(self):
+        return "G"
