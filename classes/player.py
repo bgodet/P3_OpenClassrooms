@@ -1,6 +1,5 @@
-import glob, os
 from classes.element import Element
-
+import glob, os
 
 class Player(Element):    
     """

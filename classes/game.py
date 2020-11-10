@@ -1,5 +1,3 @@
-import pygame
-
 from classes.maze import Maze
 from classes.player import Player
 from classes.guardian import Guardian

@@ -1,17 +1,15 @@
-import glob
-import os
-import random
 from classes.wall import Wall
 from classes.corridor import Corridor
 from classes.end import End
 from classes.guardian import Guardian
 from classes.player import Player
 from classes.item import Item, Needle, Tube, Ether
+import glob
+import os
+import random
 
 class Maze:
-	"""
-	
-	"""
+
 	##########################
 	# Creating the constructor
 	##########################
@@ -76,7 +74,7 @@ class Maze:
 			# Item placement
 			################
  
-			items = [Needle(),Tube(),Ether()]
+			items = [Needle(), Tube(), Ether()]
 			# With this attribute, the Maze already know how much items exist and how much is required
 			self.__nbItem = len(items)
 			randomCorridors = self.randomItem(len(items))
@@ -98,9 +96,9 @@ class Maze:
 	def __str__(self):
 		string = ""
 		for row in self.__maze_list:
-			for  item in row:
-				string+=' {} '.format(item)
-			string+='\n'
+			for item in row:
+				string += ' {} '.format(item)
+			string += '\n'
 		return string
 
 	def __repr__(self):
@@ -180,19 +178,19 @@ class Maze:
 			self.__player.setX(newX)
 			self.__player.setY(newY)
 			self.__maze_list[self.__player.getX()][self.__player.getY()] = self.__player
-	
+
 	##############################
 	# Function for player movement
 	##############################
 
 	def moveDown(self):
-		self.__movePlayer(1,0)
+		self.__movePlayer(1, 0)
 
 	def moveUp(self):
-		self.__movePlayer(-1,0)
+		self.__movePlayer(-1, 0)
 
 	def moveLeft(self):
-		self.__movePlayer(0,-1)
+		self.__movePlayer(0, -1)
 
 	def moveRight(self):
-		self.__movePlayer(0,1)
+		self.__movePlayer(0, 1)

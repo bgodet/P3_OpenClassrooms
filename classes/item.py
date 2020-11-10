@@ -1,5 +1,5 @@
-import glob, os
 from classes.element import Element
+import glob, os
 
 """
 Needle, Tube and Ether classes heritates from the Item attributes.

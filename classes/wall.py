@@ -1,9 +1,6 @@
-import glob, os
 from classes.element import *
+import glob, os
 
 class Wall(Element):
-    """
-    Wall class.
-    """
     def __init__(self):
         Element.__init__(self, 'X', "assets/wall.png")

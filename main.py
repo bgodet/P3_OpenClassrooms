@@ -1,8 +1,7 @@
-import pygame
-pygame.init()
-
-
 from classes.game import Game
+import pygame
+
+pygame.init()
 
 ###############
 # Main function
