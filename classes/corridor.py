@@ -1,9 +1,6 @@
 import glob, os
+from classes.element import Element
 
-class Corridor:
-    def __init__(self, ):
-        self.__value = " "
-    def __str__(self):
-        return self.__value
-    def __repr__(self):
-        return self.__str__()
+class Corridor(Element):
+    def __init__(self):
+        Element.__init__(self, " ", "assets/corridor.png")

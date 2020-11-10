@@ -1,9 +1,6 @@
 import glob, os
+from classes.element import Element
 
-class Guardian:
-    def __init__(self, ):
-        self.__value = "G"
-    def __str__(self):
-        return self.__value
-    def __repr__(self):
-        return self.__str__()
+class Guardian(Element):
+    def __init__(self):
+        Element.__init__(self, 'G', "assets/guardian.png")

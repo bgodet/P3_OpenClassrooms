@@ -1,87 +1,68 @@
 import glob
 import os
 import random
-from classes.wall import *
-from classes.corridor import *
-from classes.end import *
-from classes.guardian import *
-from classes.player import *
-from classes.item import *
+from classes.wall import Wall
+from classes.corridor import Corridor
+from classes.end import End
+from classes.guardian import Guardian
+from classes.player import Player
+from classes.item import Item, Needle, Tube, Ether
 
 class Maze:
-
+	"""
+	
+	"""
 	##########################
-	# Création du constructeur
+	# Creating the constructor
 	##########################
 
 	def __init__(self, filepath):
 		self.__maze_list = []
+		self.__player = None
+		self.__nbItem = 0
 
-		###################################
-		# Déclaration des variables locales
-		###################################
+		#######################
+		# Variables declaration
+		#######################
 
-		nbLine = 0
-		nbCharacterPerLine = 0
 		nbCorridor = 0
 		nbPlayer = 0
 		nbEnd = 0
 		nbGuardian = 0
-		#nbItem = 0
-		#nbFreeSpaces = []
 
-		##############################
-		# Initialisation du labyrinthe
-		##############################
+		#####################
+		# Initialing the maze
+		#####################
 
 		if os.path.isfile(filepath):
-			# Ouverture du fichier
+			# Open file
 			with open(filepath) as fp:
-				# Pour chaque ligne du fichier
-				for line in fp:
+				# For each line on the  text file
+				for x, line in enumerate(fp):
 					maze_line = []
-					nbLine += 1
-					# Supression des \n pour vérifier l'égalité parfaite
-					line = line.replace('\n','')
-					# Nombre de caractère dans la line
-					nbCharacterInLine = len(line)
-					# Vérification des cas d'erreurs sur la ligne
-					if nbLine == 1:
-						nbCharacterPerLine = len(line)
-					elif nbCharacterInLine != nbCharacterPerLine:
-						raise ValueError('Votre labyrinthe n\'est pas carré')
 
-					#################################################
-					# Récupération des éléments des lignes en mémoire
-					#################################################
+					#################################
+					# Getting lines element on memory
+					#################################
 
-					for character in line:
-						nbCol = 0
-						# Check si l'on passe sur un 'X' = mur
+					for y, character in enumerate(line):
 						if (character == 'X'):
 							maze_line.append(Wall())
-						# Check si l'on passe sur un 'G' = Guardien
 						elif (character == 'G'):
 							maze_line.append(Guardian())
 							nbGuardian += 1
-						# Check si l'on passe sur un 'E' = fin du jeu
 						elif (character == 'E'):
 							maze_line.append(End())
 							nbEnd += 1
-						# Check si l'on passe sur un ' ' = couloir
 						elif (character == ' '):
-							#nbItem += 1
-							#nbFreeSpaces.append((nbLine, nbCol))
 							maze_line.append(Corridor())
 							nbCorridor += 1
-						# Check si l'on passe sur un 'P' = joueur
 						elif (character == 'P'):
-							maze_line.append(Player())
+							self.__player = Player(x, y)
+							maze_line.append(self.__player)
 							nbPlayer += 1
-						#nbCol += 1
-					#item1, item2, item3 = random.sample(nbFreeSpaces, 3)
 
-					# Ajout en mémoire de la line
+					# Adding the line on memory
 					if nbPlayer > 1:
 						raise ValueError('Erreur : Votre niveau contient trop de joueurs !')
 					elif nbGuardian > 1:
@@ -90,24 +71,128 @@ class Maze:
 						raise ValueError('Erreur : Votre niveau contient trop de sorties')
 					else:
 						self.__maze_list.append(maze_line)
-						
-			# Vérification des cas d'erreurs sur le labyrinthe
-			if nbLine < 4:
-				print("Erreur : Le niveau du Labyrinthe est trop petit !\n")
+
+			################
+			# Item placement
+			################
+ 
+			items = [Needle(),Tube(),Ether()]
+			# With this attribute, the Maze already know how much items exist and how much is required
+			self.__nbItem = len(items)
+			randomCorridors = self.randomItem(len(items))
+
+			if randomCorridors is not None:
+				for i,(line,col) in enumerate(randomCorridors):
+					self.__maze_list[line][col] = items[i]
+
 		else:
 			raise FileNotFoundError('Aucun fichier existant sur le chemin:' + filepath)
 
-	##############################################################
-	# Fonction d'affichage de la représentation mémoire des objets
-	##############################################################
+	def getMaze(self):
+		return tuple(self.__maze_list)
+
+	##################################
+	# Display function for the console
+	##################################
 
 	def __str__(self):
 		string = ""
 		for row in self.__maze_list:
-			for item in row:
+			for  item in row:
 				string+=' {} '.format(item)
 			string+='\n'
 		return string
 
 	def __repr__(self):
 		return self.__str__()
+
+	##################################
+	# Function to place Items randomly
+	##################################
+
+	def randomItem(self, nbItems):
+		nbLine = 0
+		nbCorridors = []
+
+		for line in self.__maze_list:
+			nbColonne = 0
+			for element in line:
+				if isinstance(element, Corridor):
+					nbCorridors.append((nbLine, nbColonne))
+				nbColonne += 1
+			nbLine += 1
+		# Getting numbers of corridors
+		if len(nbCorridors) >= nbItems :
+			return random.sample(nbCorridors, nbItems)
+		else:
+			return None
+
+	###################################
+	# Core function for player movement
+	###################################
+
+	def __movePlayer(self, x, y):
+
+		newX = self.__player.getX() + x
+		newY = self.__player.getY() + y
+		if (isinstance(self.__maze_list[newX][newY],Wall)):
+			print("Impossible move.")
+
+		# Adding items on the player condition
+		# If the class is and Item
+		elif (isinstance(self.__maze_list[newX][newY],Item)):
+			item = self.__maze_list[newX][newY]
+			# Adding items in the inventory list
+			self.__player.addInventory(item)
+			# Replace player element by a corridor
+			self.__maze_list[self.__player.getX()][self.__player.getY()] = Corridor()
+			self.__player.setX(newX)
+			self.__player.setY(newY)
+			# Set the new player position
+			self.__maze_list[self.__player.getX()][self.__player.getY()] = self.__player
+			print("You picked up " + item.description)
+
+		# The game exit when player on the End cell
+		elif (isinstance(self.__maze_list[newX][newY],End)):
+			self.__maze_list[self.__player.getX()][self.__player.getY()] = Corridor()
+			self.__player.setX(newX)
+			self.__player.setY(newY)
+			# Set the new player position
+			self.__maze_list[self.__player.getX()][self.__player.getY()] = self.__player
+			print("You getted out of the maze !")
+			exit()
+
+		elif (isinstance(self.__maze_list[newX][newY],Guardian)):
+			if  self.__player.countInventory() != self.__nbItem:
+				print("You LOOSE")
+				exit()
+			else:
+				self.__maze_list[self.__player.getX()][self.__player.getY()] = Corridor()
+				self.__player.setX(newX)
+				self.__player.setY(newY)
+				# Set the new player's position
+				self.__maze_list[self.__player.getX()][self.__player.getY()] = self.__player
+				print("You WIN")
+
+		# Natural player moving
+		else:
+			self.__maze_list[self.__player.getX()][self.__player.getY()] = Corridor()
+			self.__player.setX(newX)
+			self.__player.setY(newY)
+			self.__maze_list[self.__player.getX()][self.__player.getY()] = self.__player
+	
+	##############################
+	# Function for player movement
+	##############################
+
+	def moveDown(self):
+		self.__movePlayer(1,0)
+
+	def moveUp(self):
+		self.__movePlayer(-1,0)
+
+	def moveLeft(self):
+		self.__movePlayer(0,-1)
+
+	def moveRight(self):
+		self.__movePlayer(0,1)

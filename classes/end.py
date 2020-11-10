@@ -1,9 +1,6 @@
 import glob, os
+from classes.element import Element
 
-class End:
-    def __init__(self, ):
-        self.__value = "E"
-    def __str__(self):
-        return self.__value
-    def __repr__(self):
-        return self.__str__()
+class End(Element):
+    def __init__(self):
+        Element.__init__(self, 'E', "assets/end.png")
